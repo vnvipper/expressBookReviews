@@ -49,7 +49,7 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  var username = req.session.authorization.username;
+  const username = req.session.authorization.username;
   const isbn = req.params.isbn;
   let filtered_book = books[isbn];
   if (filtered_book) {
@@ -64,6 +64,20 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
           };
       }
       res.send(`The review for the book with ISBN  ${isbn} has been added/updated.`);
+  }
+  else{
+      res.send("Unable to find this ISBN!");
+  }
+});
+
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const username = req.session.authorization.username;
+  const isbn = req.params.isbn;
+  let filtered_book = books[isbn];
+  if (filtered_book) {
+      delete filtered_book[username];
+      res.send(`The review for the book with ISBN  ${isbn} has been deleted.`);
   }
   else{
       res.send("Unable to find this ISBN!");
