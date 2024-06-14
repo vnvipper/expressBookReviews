@@ -27,18 +27,23 @@ public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
   let isbn;
     for (const [id, book] of Object.entries(books)) {
-      console.log(book);
-        if (book.author === author) {
-            isbn = id;
-        }
+      if (book.author === author) {
+          isbn = id;
+      }
     }
     res.send(books[isbn]);
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const title = req.params.title;
+  let isbn;
+    for (const [id, book] of Object.entries(books)) {
+      if (book.title === title) {
+          isbn = id;
+      }
+    }
+    res.send(books[isbn]);
 });
 
 //  Get book review
