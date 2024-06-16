@@ -23,7 +23,9 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-  res.send(JSON.stringify({books}, null, 4));
+  getAvailableBooks.then(result => {
+    res.send(JSON.stringify({result}, null, 4));
+  });
 });
 
 // Get book details based on ISBN
@@ -60,6 +62,12 @@ public_users.get('/title/:title',function (req, res) {
 public_users.get('/review/:isbn',function (req, res) {
   const isbn = req.params.isbn;
   res.send(books[isbn]?.reviews);
+});
+
+const getAvailableBooks = new Promise((resolve,reject)=>{
+  setTimeout(() => {
+    resolve(books);
+  },1000)
 });
 
 module.exports.general = public_users;
