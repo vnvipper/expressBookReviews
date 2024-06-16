@@ -47,13 +47,9 @@ public_users.get('/author/:author',function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   const title = req.params.title;
-  let isbn;
-    for (const [id, book] of Object.entries(books)) {
-      if (book.title === title) {
-          isbn = id;
-      }
-    }
-    res.send(books[isbn]);
+  getBookByTitle(title).then(result => {
+    res.send(result);
+  });
 });
 
 //  Get book review
@@ -77,6 +73,17 @@ const getBookByAuthor = async author => {
   let isbn;
   for (const [id, book] of Object.entries(availableBooks)) {
     if (book.author === author) {
+        isbn = id;
+    }
+  }
+  return availableBooks[isbn];
+}
+
+const getBookByTitle = async title => {
+  const availableBooks = await getAvailableBooks;
+  let isbn;
+  for (const [id, book] of Object.entries(availableBooks)) {
+    if (book.title === title) {
         isbn = id;
     }
   }
