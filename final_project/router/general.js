@@ -31,7 +31,9 @@ public_users.get('/',function (req, res) {
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   const isbn = req.params.isbn;
-  res.send(books[isbn]);
+  getBookByIsbn(isbn).then(result => {
+    res.send(result);
+  });
 });
   
 // Get book details based on author
@@ -69,5 +71,9 @@ const getAvailableBooks = new Promise((resolve,reject)=>{
     resolve(books);
   },1000)
 });
+
+const getBookByIsbn = isbn => {
+  return getAvailableBooks.then(result => result[isbn]);
+}
 
 module.exports.general = public_users;
