@@ -39,13 +39,9 @@ public_users.get('/isbn/:isbn',function (req, res) {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
-  let isbn;
-    for (const [id, book] of Object.entries(books)) {
-      if (book.author === author) {
-          isbn = id;
-      }
-    }
-    res.send(books[isbn]);
+  getBookByAuthor(author).then(result => {
+    res.send(result);
+  });
 });
 
 // Get all books based on title
@@ -74,6 +70,17 @@ const getAvailableBooks = new Promise((resolve,reject)=>{
 
 const getBookByIsbn = isbn => {
   return getAvailableBooks.then(result => result[isbn]);
+}
+
+const getBookByAuthor = async author => {
+  const availableBooks = await getAvailableBooks;
+  let isbn;
+  for (const [id, book] of Object.entries(availableBooks)) {
+    if (book.author === author) {
+        isbn = id;
+    }
+  }
+  return availableBooks[isbn];
 }
 
 module.exports.general = public_users;
